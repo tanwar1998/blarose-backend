@@ -3,7 +3,14 @@ const router = require('express').Router();
 // const auth = require('../../utils/auth');
 
 router.get('/hello', function(req, res){
-    res.send({ title: 'GeeksforGeeks' });
+    req.app.get('db').query('SELECT * FROM login', (err, rows, fields) => {
+        if (!err)
+            res.send(rows);
+        else
+            console.log(err);
+        })
+
+    // res.send({ title: 'GeeksforGeeks' });
 });
 
 
