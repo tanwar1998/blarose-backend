@@ -5,7 +5,6 @@ const compression = require('compression');
 const uuid = require('uuid');
 const config = require('../config/appconfig');
 // const Logger = require('../utils/logger.js');
-const mysql = require('mysql');
 
 // const logger = new Logger();
 const app = express();
@@ -23,7 +22,7 @@ app.use(cors());
 // 	process.exit();
 // });
 
-// app.set('db', require('../models/index.js'));
+app.set('db', require('../models/index.js'));
 
 app.set('port', process.env.DEV_APP_PORT);
 // app.use('/api/docs', swagger.router);
@@ -34,13 +33,6 @@ app.set('port', process.env.DEV_APP_PORT);
 // 	logger.log(logString, 'info');
 // 	next();
 // });
-const conn = mysql.createConnection(config.db);
-
-conn.connect((err) =>{
-	if(err) throw err;
-	console.log('Mysql Connected with App...');
-	app.set('db', conn);
-});
 
 
 app.use(require('../router'));

@@ -11,6 +11,22 @@ const requestHandler = new RequestHandler(logger);
 
 class UsersController extends BaseController {
 	
+	static async getUserList(req, res) {
+		try {
+			// const reqParam = req.params.id;
+			// const schema = {
+			// 	id: Joi.number().integer().min(1),
+			// };
+			// const { error } = Joi.validate({ id: reqParam }, schema);
+			// requestHandler.validateJoi(error, 400, 'bad Request', 'invalid User Id');
+
+			const result = await super.getList(req, 'Users');
+			return requestHandler.sendSuccess(res, 'User Data Extracted')({ result });
+		} catch (error) {
+			return requestHandler.sendError(req, res, error);
+		}
+	}
+
 	static async getUserById(req, res) {
 		try {
 			const reqParam = req.params.id;

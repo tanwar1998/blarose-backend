@@ -1,17 +1,10 @@
 const router = require('express').Router();
-// const UsersController = require('../../controllers/UsersController');
+const UsersController = require('../../controllers/UsersController');
+const AuthController = require('../../controllers/AuthController');
 // const auth = require('../../utils/auth');
 
-router.get('/hello', function(req, res){
-    req.app.get('db').query('SELECT * FROM login', (err, rows, fields) => {
-        if (!err)
-            res.send(rows);
-        else
-            console.log(err);
-        })
-
-    // res.send({ title: 'GeeksforGeeks' });
-});
+router.get('/list1', UsersController.getUserList);
+router.post('/login', AuthController.login);
 
 
 module.exports = router;

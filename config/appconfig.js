@@ -13,7 +13,7 @@ module.exports = {
 		host: 'localhost',
 		user: 'root', /* MySQL User */
 		password: '123456', /* MySQL Password */
-		database: 'blarose' /* MySQL Database */
+		database: 'blarose1' /* MySQL Database */
 	},
 	winiston: {
 		logpath: '/iLrnLogs/logs/',
