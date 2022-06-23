@@ -4,6 +4,7 @@ const cors = require('cors');
 const compression = require('compression');
 const uuid = require('uuid');
 const config = require('../config/appconfig');
+// const bcrypt = require('bcrypt');
 // const Logger = require('../utils/logger.js');
 
 // const logger = new Logger();
@@ -34,6 +35,9 @@ app.set('port', process.env.DEV_APP_PORT);
 // 	next();
 // });
 
+// const hashedPass = bcrypt.hashSync('123456', config.auth.saltRounds);
+
+// console.log('hashedPass>>>>>>>>>>>>>>>>', hashedPass)
 
 app.use(require('../router'));
 

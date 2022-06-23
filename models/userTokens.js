@@ -1,36 +1,28 @@
 
 
 module.exports = (sequelize, DataTypes) => {
-	const Users = sequelize.define('Users', {
+	const UserTokens = sequelize.define('UserTokens', {
 		id: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			primaryKey: true,
 			autoIncrement: true,
 		},
-		name: {
+		userId: {
+			type: DataTypes.INTEGER(11),
+			allowNull: false,
+
+            references: {
+                model: 'Users',
+                key: 'id'
+            }
+		},
+		platform: {
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
-		email: {
+		fcmToken: {
 			type: DataTypes.STRING,
-			allowNull: false,
-		},
-		// user_image: {
-		// 	type: DataTypes.STRING,
-		// 	allowNull: true,
-		// },
-		mobile_number: {
-			type: DataTypes.STRING,
-		},
-		// gender: {
-		// 	type: DataTypes.ENUM('male', 'female'),
-		// },
-		password: {
-			type: DataTypes.STRING,
-		},
-		last_login_date: {
-			type: DataTypes.DATE,
 		},
 		createdAt:
 		{
@@ -41,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
 		},
 
 	}, {});
-	Users.associate = function (models) {
+	UserTokens.associate = function (models) {
 		// Users.hasMany(models.Roles, {
 		// 	foreignKey: 'role_id',
 		// });
@@ -50,5 +42,5 @@ module.exports = (sequelize, DataTypes) => {
 		// await sequelize.sync({ force: true });
 		// Code here
 	  })();
-	return Users;
+	return UserTokens;
 };

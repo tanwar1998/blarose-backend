@@ -18,19 +18,24 @@ const tokenList = {};
 class AuthController extends BaseController {
 	static async login(req, res) {
 		try {
-			const schema = {
+			const schema = Joi.object({
 				email: Joi.string().email().required(),
 				password: Joi.string().required(),
 				fcmToken: Joi.string(),
 				platform: Joi.string().valid('ios', 'android', 'web').required(),
-			};
-			const { error } = Joi.validate({
+			});
+
+			const schemaObj = {
 				email: req.body.email,
 				password: req.body.password,
-				fcmToken: req.body.fcmToken,
+				fcmToken: req.headers.fcmToken,
 				platform: req.headers.platform,
-			}, schema);
-			requestHandler.validateJoi(error, 400, 'bad Request', error ? error.details[0].message : '');
+			};
+			const { error } = schema.validate(schemaObj);
+			if(error){
+				requestHandler.validateJoi(error, 400, 'bad Request', error ? error.details[0].message : '');
+			}
+			
 			const options = {
 				where: { email: req.body.email },
 			};
@@ -42,16 +47,16 @@ class AuthController extends BaseController {
 			if (req.headers.fcmtoken && req.headers.platform) {
 				const find = {
 					where: {
-						user_id: user.id,
+						userId: user.dataValues.id,
 						fcmToken: req.headers.fcmtoken,
-					},
+					}
 				};
 
 				const fcmToken = await super.getByCustomOptions(req, 'UserTokens', find);
 				const data = {
-					userId: user.id,
+					userId: user.dataValues.id,
 					fcmToken: req.headers.fcmtoken,
-					platform: req.headers.platform,
+					platform: req.headers.platform
 				};
 
 				if (fcmToken) {
@@ -73,9 +78,9 @@ class AuthController extends BaseController {
 			const data = {
 				last_login_date: new Date(),
 			};
-			req.params.id = user.id;
+			req.params.id = user.dataValues.id;
 			await super.updateById(req, 'Users', data);
-			const payload = _.omit(user.dataValues, ['createdAt', 'updatedAt', 'last_login_date', 'password', 'gender', 'mobile_number', 'user_image']);
+			const payload = _.omit(user.dataValues, ['createdAt', 'updatedAt', 'last_login_date', 'password','mobile_number']);
 			const token = jwt.sign({ payload }, config.auth.jwt_secret, { expiresIn: config.auth.jwt_expiresin, algorithm: 'HS512' });
 			const refreshToken = jwt.sign({
 				payload,
@@ -86,9 +91,10 @@ class AuthController extends BaseController {
 				status: 'Logged in',
 				token,
 				refreshToken,
+				payload
 			};
 			tokenList[refreshToken] = response;
-			requestHandler.sendSuccess(res, 'User logged in Successfully')({ token, refreshToken });
+			requestHandler.sendSuccess(res, 'User logged in Successfully')(response);
 		} catch (error) {
 			requestHandler.sendError(req, res, error);
 		}
