@@ -12,9 +12,19 @@ const app = express();
 app.set('config', config); // the system configrationsx
 app.use(bodyParser.json());
 app.use(require('method-override')());
-
 app.use(compression());
-app.use(cors());
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
+const corsOptions = {
+	credentials: true,
+	origin: true,
+};
+app.use(cors(corsOptions));
 // const swagger = require('../utils/swagger');
 
 
