@@ -45,12 +45,11 @@ class BaseController {
 	}
 
 	static async deleteById(req, modelName) {
-		const reqParam = req.params.id;
 		let result;
 		try {
 			result = await req.app.get('db')[modelName].destroy({
 				where: {
-					id: reqParam,
+					id: parseInt(req.params.id),
 				},
 			}).then(
 				errHandler.throwIf(r => r < 1, 404, 'not found', 'No record matches the Id provided'),
