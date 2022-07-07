@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
 		// });
 	};
 	(async () => {
-		// await sequelize.sync({ force: true });
+		// await sequelize.sync();
 		// Code here
 	  })();
 	return Slides;
