@@ -46,6 +46,30 @@ class HomeController extends BaseController {
 		}
 	}
 
+	static async updateSlide(req, res) {
+		try {
+			const data = req.body;
+			const schema = Joi.object({
+				image: Joi.string().required(),
+				text: Joi.string().required()
+			});
+			const { error } = schema.validate(data);
+			if(error){
+				requestHandler.validateJoi(error, 400, 'bad Request', 'invalid Inputs');
+				return false;
+			}
+
+			const createdSlide = await super.updateById(req, 'Slides');
+			if (!(_.isNull(createdSlide))) {
+				requestHandler.sendSuccess(res, 'slides updated successfully', 201)();
+			} else {
+				requestHandler.throwError(422, 'Unprocessable Entity', 'unable to process the contained instructions')();
+			}
+		} catch (err) {
+			requestHandler.sendError(req, res, err);
+		}
+	}
+
 
 	static async deleteSlideById(req, res) {
 		try {

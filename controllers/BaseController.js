@@ -84,11 +84,15 @@ class BaseController {
 
 	static async updateById(req, modelName, data) {
 		const recordID = req.params.id;
+		let obj = data;
+		if (_.isUndefined(obj)) {
+			obj = req.body;
+		}
 		let result;
 
 		try {
 			result = await req.app.get('db')[modelName]
-				.update(data, {
+				.update(obj, {
 					where: {
 						id: recordID,
 					},

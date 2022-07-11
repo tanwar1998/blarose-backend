@@ -33,6 +33,7 @@ app.use(cors(corsOptions));
 // 	process.exit();
 // });
 
+app.use(express.static('upload'))
 app.set('db', require('../models/index.js'));
 
 app.set('port', process.env.DEV_APP_PORT);
