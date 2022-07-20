@@ -18,6 +18,7 @@ router.use('/users', require('./usersRouter'));
 router.use('/home', require('./homeRouter'));
 router.use('/gallery', require('./galleryRouter'));
 router.use('/client', require('./clientRouter'));
+router.use('/about', require('./aboutRouter'));
 
 router.post('/upload',auth.isAuthunticated,  upload.single('file'), (req, res) => {
     try {
