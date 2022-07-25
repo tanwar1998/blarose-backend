@@ -23,4 +23,16 @@ router.put('/service/:id', auth.isAuthunticated, HomeController.updateService);
 router.delete('/service/:id', auth.isAuthunticated, HomeController.deleteServiceById);
 
 
+router.get('/ppLocation', HomeController.getPPLocationList);
+router.post('/ppLocation', auth.isAuthunticated, HomeController.savePPLocation);
+router.put('/ppLocation/:id', auth.isAuthunticated, HomeController.updatePPLocation);
+router.delete('/ppLocation/:id', auth.isAuthunticated, HomeController.deletePPLocationById);
+
+
+router.get('/ppItem', HomeController.getPPItemList);
+router.post('/ppItem', auth.isAuthunticated, HomeController.savePPItem);
+router.put('/ppItem/:id', auth.isAuthunticated, HomeController.updatePPItem);
+router.delete('/ppItem/:id', auth.isAuthunticated, HomeController.deletePPItemById);
+
+
 module.exports = router;

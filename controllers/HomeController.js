@@ -267,7 +267,6 @@ class HomeController extends BaseController {
 			requestHandler.sendError(req, res, err);
 		}
 	}
-
 	static async updateService(req, res) {
 		try {
 			const data = req.body;
@@ -291,7 +290,6 @@ class HomeController extends BaseController {
 			requestHandler.sendError(req, res, err);
 		}
 	}
-
 	static async deleteServiceById(req, res) {
 		try {
 			const schema = Joi.object({
@@ -309,7 +307,148 @@ class HomeController extends BaseController {
 		}
 	}
 
+	static async getPPLocationList(req, res) {
+		try {
+			const result = await super.getList(req, 'PPLocation', {
+				attributes: [`id`, `text`]});
+			return requestHandler.sendSuccess(res, 'PPLocation Data Extracted')({ result });
+		} catch (error) {
+			return requestHandler.sendError(req, res, error);
+		}
+	}
+	static async savePPLocation(req, res) {
+		try {
+			const data = req.body;
+			const schema = Joi.object({
+				text: Joi.string().required(), 
+			});
+			const { error } = schema.validate(data);
+			if(error){
+				requestHandler.validateJoi(error, 400, 'bad Request', 'invalid Inputs');
+				return false;
+			}
 
+			const createdSlide = await super.create(req, 'PPLocation');
+			if (!(_.isNull(createdSlide))) {
+				requestHandler.sendSuccess(res, 'PPLocation added successfully', 201)();
+			} else {
+				requestHandler.throwError(422, 'Unprocessable Entity', 'unable to process the contained instructions')();
+			}
+		} catch (err) {
+			requestHandler.sendError(req, res, err);
+		}
+	}
+	static async updatePPLocation(req, res) {
+		try {
+			const data = req.body;
+			const schema = Joi.object({
+				text: Joi.string().required(),
+			});
+			const { error } = schema.validate(data);
+			if(error){
+				requestHandler.validateJoi(error, 400, 'bad Request', 'invalid Inputs');
+				return false;
+			}
+
+			const createdSlide = await super.updateById(req, 'PPLocation');
+			if (!(_.isNull(createdSlide))) {
+				requestHandler.sendSuccess(res, 'PPLocation updated successfully', 201)();
+			} else {
+				requestHandler.throwError(422, 'Unprocessable Entity', 'unable to process the contained instructions')();
+			}
+		} catch (err) {
+			requestHandler.sendError(req, res, err);
+		}
+	}
+	static async deletePPLocationById(req, res) {
+		try {
+			const schema = Joi.object({
+				id: Joi.number().integer().min(1),
+			});
+			const { error } = schema.validate({id: parseInt(req.params.id)});
+			if(error){
+				requestHandler.validateJoi(error, 400, 'bad Request', 'invalid Inputs');
+				return false;
+			}
+			const result = await super.deleteById(req, 'PPLocation');
+			return requestHandler.sendSuccess(res, 'PPLocation Deleted Successfully')({ result });
+		} catch (err) {
+			return requestHandler.sendError(req, res, err);
+		}
+	}
+
+
+	static async getPPItemList(req, res) {
+		try {
+			const result = await super.getList(req, 'PPItem', {
+				attributes: [`id`, `text`, `locationId`], include: 'PPLocations'});
+			return requestHandler.sendSuccess(res, 'PPItem Data Extracted')({ result });
+		} catch (error) {
+			return requestHandler.sendError(req, res, error);
+		}
+	}
+	static async savePPItem(req, res) {
+		try {
+			const data = req.body;
+			const schema = Joi.object({
+				text: Joi.string().required(),
+				locationId: Joi.number().integer().required(),
+			});
+			const { error } = schema.validate(data);
+			if(error){
+				requestHandler.validateJoi(error, 400, 'bad Request', 'invalid Inputs');
+				return false;
+			}
+
+			const createdSlide = await super.create(req, 'PPItem');
+			if (!(_.isNull(createdSlide))) {
+				requestHandler.sendSuccess(res, 'PPItem added successfully', 201)();
+			} else {
+				requestHandler.throwError(422, 'Unprocessable Entity', 'unable to process the contained instructions')();
+			}
+		} catch (err) {
+			requestHandler.sendError(req, res, err);
+		}
+	}
+	static async updatePPItem(req, res) {
+		try {
+			const data = req.body;
+			const schema = Joi.object({
+				text: Joi.string().required(),
+				locationId: Joi.number().integer().required(), 
+			});
+			const { error } = schema.validate(data);
+			if(error){
+				requestHandler.validateJoi(error, 400, 'bad Request', 'invalid Inputs');
+				return false;
+			}
+
+			const createdSlide = await super.updateById(req, 'PPItem');
+			if (!(_.isNull(createdSlide))) {
+				requestHandler.sendSuccess(res, 'PPItem updated successfully', 201)();
+			} else {
+				requestHandler.throwError(422, 'Unprocessable Entity', 'unable to process the contained instructions')();
+			}
+		} catch (err) {
+			requestHandler.sendError(req, res, err);
+		}
+	}
+	static async deletePPItemById(req, res) {
+		try {
+			const schema = Joi.object({
+				id: Joi.number().integer().min(1),
+			});
+			const { error } = schema.validate({id: parseInt(req.params.id)});
+			if(error){
+				requestHandler.validateJoi(error, 400, 'bad Request', 'invalid Inputs');
+				return false;
+			}
+			const result = await super.deleteById(req, 'PPItem');
+			return requestHandler.sendSuccess(res, 'PPItem Deleted Successfully')({ result });
+		} catch (err) {
+			return requestHandler.sendError(req, res, err);
+		}
+	}
 
 
 }
