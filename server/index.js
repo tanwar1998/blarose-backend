@@ -38,7 +38,7 @@ app.use(express.static('upload'))
 // this is the line to disable db connection
 // app.set('db', require('../models/index.js'));
 
-app.set('port', process.env.DEV_APP_PORT);
+app.set('port', process.env.PORT);
 // app.use('/api/docs', swagger.router);
 
 // app.use((req, res, next) => {

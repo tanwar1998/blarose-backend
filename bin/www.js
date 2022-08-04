@@ -39,7 +39,7 @@
   * Get port from environment and store in Express.
   */
  
- const port = normalizePort(process.env.DEV_APP_PORT || '3001');
+ const port = normalizePort(process.env.PORT || '3001');
  app.set('port', port);
  /**
   * Event listener for HTTP server "error" event.
