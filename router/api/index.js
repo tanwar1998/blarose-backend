@@ -34,6 +34,19 @@ router.post('/upload', upload.single('file'), (req, res) => {
     }
   });
 
+  router.get('/', (req, res) => {
+    try {
+      res.send('server is running');
+    }catch(err) {
+        if (err instanceof multer.MulterError) {
+            console.log('multer error while uploading data')
+        } else if (err) {
+            console.log('error', err)
+        }
+      res.send(400);
+    }
+  });
+
 
 // router.use('/email', require('./sendEmail'));
 
