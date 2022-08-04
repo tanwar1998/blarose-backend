@@ -14,7 +14,7 @@ class ClientController extends BaseController {
 	static async getClientList(req, res) {
 		try {
 			const result = await super.getList(req, 'Client', {
-				attributes: [`id`, `text`, `image`]});
+				attributes: [`id`, `text`, `image`, `link`]});
 			return requestHandler.sendSuccess(res, 'Client Data Extracted')({ result });
 		} catch (error) {
 			return requestHandler.sendError(req, res, error);
@@ -26,6 +26,7 @@ class ClientController extends BaseController {
 			const data = req.body;
 			const schema = Joi.object({
 				image: Joi.string().required(),
+				link: Joi.string().required(),
 				text: Joi.string().required()
 			});
 			const { error } = schema.validate(data);
@@ -50,6 +51,7 @@ class ClientController extends BaseController {
 			const data = req.body;
 			const schema = Joi.object({
 				image: Joi.string().required(),
+				link: Joi.string().required(),
 				text: Joi.string().required()
 			});
 			const { error } = schema.validate(data);

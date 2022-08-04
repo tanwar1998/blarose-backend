@@ -14,7 +14,7 @@ class AboutController extends BaseController {
 	static async getSStoryList(req, res) {
 		try {
 			const result = await super.getList(req, 'AboutUSuccessStory', {
-				attributes: [`id`, `text`, `date`, `location`]});
+				attributes: [`id`, `text`, `date`, `by`,  `location`]});
 			return requestHandler.sendSuccess(res, 'SStory Data Extracted')({ result });
 		} catch (error) {
 			return requestHandler.sendError(req, res, error);
@@ -27,7 +27,8 @@ class AboutController extends BaseController {
 			const schema = Joi.object({
 				location: Joi.string().required(),
 				date: Joi.string().required(),
-				text: Joi.string().required()
+				text: Joi.string().required(),
+				by: Joi.string()
 			});
 			const { error } = schema.validate(data);
 			if(error){
@@ -52,6 +53,7 @@ class AboutController extends BaseController {
 			const schema = Joi.object({
 				location: Joi.string().required(),
 				date: Joi.string().required(),
+				by: Joi.string(),
 				text: Joi.string().required()
 			});
 			const { error } = schema.validate(data);
